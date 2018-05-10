@@ -6,25 +6,10 @@ const production = Boolean(process.argv[2] === 'production');
 export default [
 	// CommonJS version, for Node, Browserify & Webpack
 	{
-    input: ['src/common.js'],
+    input: ['src/index.js'],
     output: {
-      dir: 'dist',
+      dir: './',
       format: 'cjs',
-      sourcemap: false,
-      intro: `const ENVIRONMENT = {version: '${version}', production: true};`,
-      banner: `/* ${name} version ${version} */`
-    },
-    plugins: [
-      cleanup()
-    ],
-    experimentalCodeSplitting: true,
-    experimentalDynamicImport: true
-	},
-  {
-    input: ['src/module.js'],
-    output: {
-      dir: 'dist',
-      format: 'es',
       sourcemap: false,
       intro: `const ENVIRONMENT = {version: '${version}', production: true};`,
       banner: `/* ${name} version ${version} */`

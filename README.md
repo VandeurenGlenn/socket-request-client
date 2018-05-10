@@ -2,8 +2,10 @@
 > socket-request-server client connection with ease
  
 ## usage
+### defaults
 ```js
 import clientConnection from 'socket-request-client';
+
 const request = {url: 'user', params: {password: 'password', email:: 'email'}};
 
 const client = clientConnection(6000, 'echo-protocol').then(client => {
@@ -11,6 +13,22 @@ const client = clientConnection(6000, 'echo-protocol').then(client => {
     console.log(result);
   });
   // or
+  client.on('send', result => { console.log(result) });
+  client.send(request);
+});
+```
+### custom pubsub
+```js
+import clientConnection from 'socket-request-client';
+import IpfsApi from 'ipfs-api';
+const ipfs = new IpfsApi();
+const options = {
+  pubsub: ipfs.pubsub
+}
+
+const request = {url: 'user', params: {password: 'password', email:: 'email'}};
+
+const client = clientConnection(6000, 'echo-protocol', options).then(client => {
   client.on('send', result => { console.log(result) });
   client.send(request);
 });

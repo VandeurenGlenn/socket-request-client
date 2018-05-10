@@ -10,10 +10,6 @@
   version "10.0.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.0.7.tgz#c1c9e2a68be8c1544c8761012cd6cf722949691f"
 
-PubSub@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/PubSub/-/PubSub-3.4.0.tgz#85ff173837781cba7dbea0a548c56fc10c043786"
-
 acorn@^5.5.3:
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.5.3.tgz#f473dd47e0277a08e28e9bec5aeeb04751f0b8c9"
@@ -174,6 +170,10 @@ kind-of@^3.0.2:
 kind-of@^6.0.0:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
+
+little-pubsub@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/little-pubsub/-/little-pubsub-0.1.0.tgz#b59f0aa8f672786c2eba48d3ce26f23cdf64e9f1"
 
 magic-string@^0.24.0:
   version "0.24.0"

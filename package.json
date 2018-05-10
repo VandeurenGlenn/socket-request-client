@@ -1,6 +1,6 @@
 {
   "name": "socket-request-client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "index.js",
   "repository": "https://github.com/vandeurenglenn/socket-request-client",
   "author": "vandeurenglenn <vandeurenglenn@gmail.com>",
@@ -11,7 +11,7 @@
     "test": "node test.js"
   },
   "dependencies": {
-    "PubSub": "^3.4.0",
+    "little-pubsub": "^0.1.0",
     "websocket": "^1.0.26"
   },
   "devDependencies": {

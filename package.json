@@ -1,6 +1,6 @@
 {
   "name": "socket-request-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "repository": "https://github.com/vandeurenglenn/socket-request-client",
   "author": "vandeurenglenn <vandeurenglenn@gmail.com>",

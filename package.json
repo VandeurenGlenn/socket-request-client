@@ -1,0 +1,21 @@
+{
+  "name": "socket-request-client",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/vandeurenglenn/socket-request-client",
+  "author": "vandeurenglenn <vandeurenglenn@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "rollup -c",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "PubSub": "^3.4.0",
+    "websocket": "^1.0.26"
+  },
+  "devDependencies": {
+    "rollup": "^0.58.2",
+    "rollup-plugin-cleanup": "^3.0.0-beta.1"
+  }
+}

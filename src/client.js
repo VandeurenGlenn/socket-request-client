@@ -1,4 +1,4 @@
-import * as PubSub from './../node_modules/PubSub/src/pubsub';
+import PubSub from 'PubSub';
 
 const socketRequestClient = (port = 6000, protocol = 'echo-protocol', WebSocket) => {
   const pubsub = new PubSub();

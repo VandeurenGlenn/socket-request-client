@@ -1,4 +1,4 @@
-import PubSub from '../node_modules/little-pubsub/src/index';
+import PubSub from 'little-pubsub';
 
 const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) => {
   if (!pubsub) pubsub = new PubSub();

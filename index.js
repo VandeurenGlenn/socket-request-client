@@ -1,30 +1,11 @@
-/* socket-request-client version 0.1.2 */
+/* socket-request-client version 0.1.3 */
 'use strict';
 
-const ENVIRONMENT = {version: '0.1.2', production: true};
+const ENVIRONMENT = {version: '0.1.3', production: true};
 
-class PubSub {
-  constructor() {
-    this.handlers = [];
-  }
-  subscribe(event, handler, context) {
-    if (typeof context === 'undefined') {
-      context = handler;
-    }
-    this.handlers.push({event: event, handler: handler.bind(context)});
-  }
-  publish(event, change) {
-    for (let i = 0; i < this.handlers.length; i++) {
-      if (this.handlers[i].event === event) {
-        let oldValue = this.handlers[i].oldValue;
-        if (oldValue !== change.value) {
-          this.handlers[i].handler(change, this.handlers[i].oldValue);
-          this.handlers[i].oldValue = change.value;
-        }
-      }
-    }
-  }
-}
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var PubSub = _interopDefault(require('little-pubsub'));
 
 const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) => {
   if (!pubsub) pubsub = new PubSub();

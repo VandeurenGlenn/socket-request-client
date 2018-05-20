@@ -8,7 +8,7 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
 
   const onmessage = message => {
     const {value, url, status} = JSON.parse(message.data.toString());
-    
+
     if (status === 200) {
       pubsub.publish(url, value);
     } else {
@@ -24,7 +24,7 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
   const on = (url, cb) => {
     pubsub.subscribe(url, cb);
   }
-  
+
   /**
    * @param {string} type
    * @param {string} name
@@ -38,9 +38,10 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
       send(client, request);
     });
   }
-  
+
   const clientConnection = client => {
     return {
+      client,
       request: req => request(client, req),
       send: req => send(client, req),
       close: exit => {
@@ -51,7 +52,7 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
       }
     }
   }
-  
+
   return new Promise(resolve => {
     const init = () => {
       let ws;
@@ -77,6 +78,6 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
       };
     }
     return init();
-  });    
+  });
 }
 export default socketRequestClient;

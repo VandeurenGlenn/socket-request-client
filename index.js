@@ -1,7 +1,7 @@
-/* socket-request-client version 0.1.3 */
+/* socket-request-client version 0.1.5 */
 'use strict';
 
-const ENVIRONMENT = {version: '0.1.3', production: true};
+const ENVIRONMENT = {version: '0.1.5', production: true};
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
@@ -36,6 +36,7 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
   };
   const clientConnection = client => {
     return {
+      client,
       request: req => request(client, req),
       send: req => send(client, req),
       close: exit => {

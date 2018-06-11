@@ -171,9 +171,9 @@ kind-of@^6.0.0:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-little-pubsub@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/little-pubsub/-/little-pubsub-0.1.0.tgz#b59f0aa8f672786c2eba48d3ce26f23cdf64e9f1"
+little-pubsub@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/little-pubsub/-/little-pubsub-0.2.0.tgz#685d915e021e118b062f675b8fe6e9dfb94538ef"
 
 magic-string@^0.24.0:
   version "0.24.1"

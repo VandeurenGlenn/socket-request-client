@@ -17,7 +17,6 @@ export default [
     plugins: [
       cleanup()
     ],
-    experimentalCodeSplitting: true,
-    experimentalDynamicImport: true
+    experimentalCodeSplitting: true
 	}
 ];

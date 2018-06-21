@@ -18,7 +18,7 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
   }
 
   const send = (client, request) => {
-    client.send(Buffer.from(JSON.stringify(request)))
+    client.send(JSON.stringify(request))
   }
 
   const on = (url, cb) => {

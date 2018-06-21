@@ -1,7 +1,7 @@
-/* socket-request-client version 0.2.0 */
+/* socket-request-client version 0.3.0 */
 'use strict';
 
-const ENVIRONMENT = {version: '0.2.0', production: true};
+const ENVIRONMENT = {version: '0.3.0', production: true};
 
 class PubSub {
   constructor() {
@@ -45,7 +45,7 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
     }
   };
   const send = (client, request) => {
-    client.send(Buffer.from(JSON.stringify(request)));
+    client.send(JSON.stringify(request));
   };
   const on = (url, cb) => {
     pubsub.subscribe(url, cb);

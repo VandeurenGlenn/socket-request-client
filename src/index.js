@@ -7,12 +7,13 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
   }
 
   const onmessage = message => {
-    const {value, url, status} = JSON.parse(message.data.toString());
-
+    const {value, url, status, id} = JSON.parse(message.data.toString());
+    const publisher = id ? id : url;
     if (status === 200) {
-      pubsub.publish(url, value);
+      pubsub.publish(publisher, value);
     } else {
-      onerror(`Failed requesting ${type} @onmessage`);
+      // pubsub.publish(publisher, btoa(JSON.stringify(value)));
+      onerror(`Failed requesting ${JSON.stringify(value)} @onmessage`);
     }
 
   }
@@ -32,7 +33,8 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
    */
   const request = (client, request) => {
     return new Promise((resolve, reject) => {
-      on(request.url, result => {
+      request.id = Math.random().toString(36).slice(-12);
+      on(request.id, result => {
         resolve(result)
       });
       send(client, request);

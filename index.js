@@ -1,7 +1,7 @@
-/* socket-request-client version 0.3.0 */
+/* socket-request-client version 0.3.1 */
 'use strict';
 
-const ENVIRONMENT = {version: '0.3.0', production: true};
+const ENVIRONMENT = {version: '0.3.1', production: true};
 
 class PubSub {
   constructor() {
@@ -23,7 +23,7 @@ class PubSub {
     this.subscribers[event].handlers.splice(i);
   }
   publish(event, change) {
-    this.subscribers[event].handlers.forEach(handler => {
+    if (this.subscribers[event]) this.subscribers[event].handlers.forEach(handler => {
       if (this.values[event] !== change)
         handler(change, this.values[event]);
         this.values[event] = change;
@@ -37,11 +37,12 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
     pubsub.publish('error', error);
   };
   const onmessage = message => {
-    const {value, url, status} = JSON.parse(message.data.toString());
+    const {value, url, status, id} = JSON.parse(message.data.toString());
+    const publisher = id ? id : url;
     if (status === 200) {
-      pubsub.publish(url, value);
+      pubsub.publish(publisher, value);
     } else {
-      onerror(`Failed requesting ${type} @onmessage`);
+      onerror(`Failed requesting ${JSON.stringify(value)} @onmessage`);
     }
   };
   const send = (client, request) => {
@@ -52,7 +53,8 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
   };
   const request = (client, request) => {
     return new Promise((resolve, reject) => {
-      on(request.url, result => {
+      request.id = Math.random().toString(36).slice(-12);
+      on(request.id, result => {
         resolve(result);
       });
       send(client, request);

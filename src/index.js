@@ -7,7 +7,11 @@ const socketRequestClient = options => {
   if (!pubsub) pubsub = new PubSub();
 
   const onerror = error => {
-    pubsub.publish('error', error);
+    if (pubsub.subscribers['error']) {
+      pubsub.publish('error', error);
+    } else {
+      console.error(error);
+    }
   }
 
   const onmessage = message => {

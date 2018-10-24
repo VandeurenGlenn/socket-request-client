@@ -31,10 +31,11 @@ class PubSub {
 }
 
 const socketRequestClient = options => {
-  let { port, protocol, pubsub} = options;
+  let { port, protocol, pubsub, address} = options;
   if (!port) port = 6000;
   if (!protocol) protocol = 'echo-protocol';
   if (!pubsub) pubsub = new PubSub();
+  if (!address) address = 'localhost';
   const onerror = error => {
     if (pubsub.subscribers['error']) {
       pubsub.publish('error', error);
@@ -88,7 +89,7 @@ const socketRequestClient = options => {
       } else {
         ws = WebSocket;
       }
-      const client = new ws(`ws://localhost:${port}/`, protocol);
+      const client = new ws(`ws://${address}:${port}/`, protocol);
       client.onmessage = onmessage;
       client.onerror = onerror;
       client.onopen = () => resolve(clientConnection(client));

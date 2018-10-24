@@ -12,8 +12,8 @@
     "test": "node test.js"
   },
   "dependencies": {
-    "little-pubsub": "^0.2.0",
-    "websocket": "^1.0.26"
+    "little-pubsub": "^0.2.4",
+    "websocket": "^1.0.28"
   },
   "devDependencies": {
     "rollup": "^0.61.1",

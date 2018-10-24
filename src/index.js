@@ -1,7 +1,11 @@
 import PubSub from '../../little-pubsub/src/index.js';
 
-const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) => {
+const socketRequestClient = options => {
+  let { port, protocol, pubsub} = options;
+  if (!port) port = 6000;
+  if (!protocol) protocol = 'echo-protocol';
   if (!pubsub) pubsub = new PubSub();
+
   const onerror = error => {
     pubsub.publish('error', error);
   }

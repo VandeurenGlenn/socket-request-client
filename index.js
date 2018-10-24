@@ -1,18 +1,17 @@
-/* socket-request-client version 0.3.1 */
+/* socket-request-client version 0.4.0 */
 'use strict';
 
-const ENVIRONMENT = {version: '0.3.1', production: true};
+const ENVIRONMENT = {version: '0.4.0', production: true};
 
 class PubSub {
   constructor() {
     this.subscribers = {};
-    this.values = [];
   }
   subscribe(event, handler, context) {
     if (typeof context === 'undefined') {
       context = handler;
     }
-    this.subscribers[event] = this.subscribers[event] || { handlers: []};
+    this.subscribers[event] = this.subscribers[event] || { handlers: [], value: null};
     this.subscribers[event].handlers.push(handler.bind(context));
   }
   unsubscribe(event, handler, context) {
@@ -23,18 +22,25 @@ class PubSub {
     this.subscribers[event].handlers.splice(i);
   }
   publish(event, change) {
-    if (this.subscribers[event]) this.subscribers[event].handlers.forEach(handler => {
-      if (this.values[event] !== change)
-        handler(change, this.values[event]);
-        this.values[event] = change;
+    if (this.subscribers[event] && this.subscribers[event].value !== change)
+      this.subscribers[event].handlers.forEach(handler => {
+        handler(change, this.subscribers[event].value);
       });
+      this.subscribers[event].value = change;
   }
 }
 
-const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) => {
+const socketRequestClient = options => {
+  let { port, protocol, pubsub} = options;
+  if (!port) port = 6000;
+  if (!protocol) protocol = 'echo-protocol';
   if (!pubsub) pubsub = new PubSub();
   const onerror = error => {
-    pubsub.publish('error', error);
+    if (pubsub.subscribers['error']) {
+      pubsub.publish('error', error);
+    } else {
+      console.error(error);
+    }
   };
   const onmessage = message => {
     const {value, url, status, id} = JSON.parse(message.data.toString());
@@ -65,6 +71,7 @@ const socketRequestClient = (port = 6000, protocol = 'echo-protocol', pubsub) =>
       client,
       request: req => request(client, req),
       send: req => send(client, req),
+      on,
       close: exit => {
         client.onclose = message => {
           if (exit) process.exit();

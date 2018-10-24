@@ -54,6 +54,7 @@ const socketRequestClient = options => {
       client,
       request: req => request(client, req),
       send: req => send(client, req),
+      on,
       close: exit => {
         client.onclose = message => {
           if (exit) process.exit()

@@ -1,7 +1,7 @@
-/* socket-request-client version 0.4.0 */
+/* socket-request-client version 0.4.2 */
 'use strict';
 
-const ENVIRONMENT = {version: '0.4.0', production: true};
+const ENVIRONMENT = {version: '0.4.2', production: true};
 
 class PubSub {
   constructor() {
@@ -22,11 +22,12 @@ class PubSub {
     this.subscribers[event].handlers.splice(i);
   }
   publish(event, change) {
-    if (this.subscribers[event] && this.subscribers[event].value !== change)
+    if (this.subscribers[event] && this.subscribers[event].value !== change) {
       this.subscribers[event].handlers.forEach(handler => {
         handler(change, this.subscribers[event].value);
       });
       this.subscribers[event].value = change;
+    }
   }
 }
 

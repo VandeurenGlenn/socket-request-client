@@ -1,12 +1,12 @@
 import PubSub from '../../little-pubsub/src/index.js';
 
 const socketRequestClient = options => {
-  let { port, protocol, pubsub, address} = options;
+  let { port, protocol, pubsub, address, wss} = options;
   if (!port) port = 6000;
   if (!protocol) protocol = 'echo-protocol';
   if (!pubsub) pubsub = new PubSub();
   if (!address) address = 'localhost';
-  
+
   const onerror = error => {
     if (pubsub.subscribers['error']) {
       pubsub.publish('error', error);
@@ -73,7 +73,7 @@ const socketRequestClient = options => {
       } else {
         ws = WebSocket;
       }
-      const client = new ws(`ws://${address}:${port}/`, protocol);
+      const client = new ws(`${wss ? 'wss' : 'ws'}://${address}:${port}/`, protocol);
 
       client.onmessage = onmessage;
       client.onerror = onerror;

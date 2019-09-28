@@ -6,12 +6,13 @@ const socketRequestClient = options => {
   if (!protocol) protocol = 'echo-protocol';
   if (!pubsub) pubsub = new PubSub();
   if (!address) address = 'localhost';
+  let tries = 0;
 
   const onerror = error => {
     if (pubsub.subscribers['error']) {
       pubsub.publish('error', error);
     } else {
-      console.error(error);
+      if (error.target.readyState !== 3) console.error(error);
     }
   }
 
@@ -64,7 +65,7 @@ const socketRequestClient = options => {
       }
     }
   }
-
+  
   return new Promise(resolve => {
     const init = () => {
       let ws;
@@ -77,15 +78,19 @@ const socketRequestClient = options => {
 
       client.onmessage = onmessage;
       client.onerror = onerror;
-      client.onopen = () => resolve(clientConnection(client));
+      client.onopen = () => {
+        tries = 0;
+        resolve(clientConnection(client))
+      };
       client.onclose = message => {
+        tries++
         console.log(`${protocol} Client Closed`);
-        // TODO: fail after 10 times
+        if (tries > 5) throw new Error(`404 - ${wss ? 'wss' : 'ws'}://${address}:${port}/`)
         if (message.code === 1006) {
-          console.log('Retrying in 3 seconds');
+          console.log('Retrying in 10 seconds');
           setTimeout(() => {
             return init();
-          }, 3000);
+          }, 10000);
         }
       };
     }

@@ -1,7 +1,7 @@
 import PubSub from '../../little-pubsub/src/index.js';
 
 const socketRequestClient = options => {
-  let { port, protocol, pubsub, address, wss} = options;
+  let { port, protocol, pubsub, address, wss, retry } = options;
   if (!port) port = 6000;
   if (!protocol) protocol = 'echo-protocol';
   if (!pubsub) pubsub = new PubSub();
@@ -84,6 +84,7 @@ const socketRequestClient = options => {
       };
       client.onclose = message => {
         tries++
+        if (!retry) return reject(options)
         if (tries > 5) {
           console.log(`${protocol} Client Closed`);
           console.error(`could not connect to - ${wss ? 'wss' : 'ws'}://${address}:${port}/`)
@@ -93,7 +94,7 @@ const socketRequestClient = options => {
           console.log('Retrying in 10 seconds');
           setTimeout(() => {
             return init();
-          }, 10000);
+          }, retry);
         }
       };
     }

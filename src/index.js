@@ -84,8 +84,11 @@ const socketRequestClient = options => {
       };
       client.onclose = message => {
         tries++
-        console.log(`${protocol} Client Closed`);
-        if (tries > 5) throw new Error(`404 - ${wss ? 'wss' : 'ws'}://${address}:${port}/`)
+        if (tries > 5) {
+          console.log(`${protocol} Client Closed`);
+          console.error(`could not connect to - ${wss ? 'wss' : 'ws'}://${address}:${port}/`)
+          return resolve(clientConnection(client))
+        }
         if (message.code === 1006) {
           console.log('Retrying in 10 seconds');
           setTimeout(() => {

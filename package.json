@@ -1,6 +1,6 @@
 {
   "name": "socket-request-client",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "main": "index.js",
   "module": "src/index.js",
   "repository": "https://github.com/vandeurenglenn/socket-request-client",
@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "little-pubsub": "^0.2.5",
-    "websocket": "^1.0.28"
+    "websocket": "^1.0.30"
   },
   "devDependencies": {
     "rollup": "^0.61.1",
-    "rollup-plugin-cleanup": "^3.0.0-beta.1"
+    "rollup-plugin-cleanup": "^3.1.1"
   }
 }

@@ -22,8 +22,7 @@ const socketRequestClient = options => {
     if (status === 200) {
       pubsub.publish(publisher, value);
     } else {
-      value = {error: value};
-      pubsub.publish(publisher, value);
+      pubsub.publish(publisher, {error: value});
     }
 
   }

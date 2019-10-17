@@ -7,14 +7,13 @@
 import clientConnection from 'socket-request-client';
 const request = {url: 'user', params: {password: 'password', email:: 'email'}};
 
-const client = await clientConnection(6000, 'echo-protocol')
+const client = await clientConnection({port: 6000})
 // a request is client.on & client.send combined
 const requested = await client.request(request);
 
 // without async await
 clientConnection({
   port: 6000,
-  protocol: 'echo-protocol',  
   address: '0.0.0.0',
 }).then(client => {  
   client.on('send', result => { console.log(result) });

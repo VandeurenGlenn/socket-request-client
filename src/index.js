@@ -12,7 +12,7 @@ const socketRequestClient = options => {
     if (pubsub.subscribers['error']) {
       pubsub.publish('error', error);
     } else {
-      if (error.target.readyState !== 3) console.error(error);
+      console.error(error);
     }
   }
 
@@ -22,8 +22,8 @@ const socketRequestClient = options => {
     if (status === 200) {
       pubsub.publish(publisher, value);
     } else {
-      // pubsub.publish(publisher, btoa(JSON.stringify(value)));
-      onerror(`Failed requesting ${JSON.stringify(value)} @onmessage`);
+      value = {error: value};
+      pubsub.publish(publisher, value);
     }
 
   }
@@ -45,6 +45,7 @@ const socketRequestClient = options => {
     return new Promise((resolve, reject) => {
       request.id = Math.random().toString(36).slice(-12);
       on(request.id, result => {
+        if (result && result.error) return reject(result.error)
         resolve(result)
       });
       send(client, request);

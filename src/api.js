@@ -59,9 +59,10 @@ export default _pubsub => {
         return result
       },
       ping: async () => {
-        const { result, id, handler } = await request(client, {url: 'ping'})        
+        const now = new Date().getTime()
+        const { result, id, handler } = await request(client, {url: 'ping'})
         unsubscribe(id, handler);
-        return result
+        return (Number(result) - now)
       }
     }
   }

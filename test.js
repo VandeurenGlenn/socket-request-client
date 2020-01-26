@@ -7,7 +7,7 @@
   await client.pubsub.unsubscribe('hello', value => console.log(value))
   const serverUptime = await client.server.uptime()
   const uptime = await client.uptime()
-  
+  const ping = await client.server.ping()
   process.exit()
 })();
 

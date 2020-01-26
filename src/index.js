@@ -28,12 +28,25 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
   }  
 
   const clientConnection = client => {
+    const startTime = new Date().getTime()
     return {
       client,
-      request: req => api.request(client, req),
+      request: async req => {
+        const { result, id, handler } = await api.request(client, req)
+        pubsub.unsubscribe(id, handler);
+        return result
+      },
       send: req => api.send(client, req),
-      on: api.on,
+      subscribe: api.subscribe,
+      unsubscribe: api.unsubscribe,
+      subscribers: api.subscribers,
+      publish: api.publish,
       pubsub: api.pubsub(client),
+      uptime: () => {
+        const now = new Date().getTime()
+        return (now - startTime)
+      },
+      server: api.server(client),
       close: exit => {
         client.onclose = message => {
           if (exit) process.exit()

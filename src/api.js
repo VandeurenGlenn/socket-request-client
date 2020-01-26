@@ -1,4 +1,17 @@
 export default _pubsub => {
+  
+  const subscribe = (topic, cb) => {
+    _pubsub.subscribe(topic, cb);
+  }
+  
+  const unsubscribe = (topic, cb) => {
+    _pubsub.unsubscribe(topic, cb);
+  }
+  
+  const publish = (topic, value) => {
+    _pubsub.publish(topic, value);
+  }
+  
   /**
    * @param {string} type
    * @param {string} name
@@ -7,10 +20,11 @@ export default _pubsub => {
   const request = (client, request) => {
     return new Promise((resolve, reject) => {
       request.id = Math.random().toString(36).slice(-12);
-      on(request.id, result => {
+      const handler = result => {
         if (result && result.error) return reject(result.error)
-        resolve(result)
-      });
+        resolve({result, id: request.id, handler})
+      }
+      subscribe(request.id, handler);
       send(client, request);
     });
   }
@@ -22,24 +36,35 @@ export default _pubsub => {
   const pubsub = client => {
     return {
       publish: (topic = 'pubsub', value) => {
-        _pubsub.publish(topic, value)
+        publish(topic, value)
         send(client, {url: 'pubsub', params: { topic, value }})
       },
       subscribe: (topic = 'pubsub', cb) => {
-        _pubsub.subscribe(topic, cb);
+        subscribe(topic, cb);
         send(client, {url: 'pubsub', params: { topic, subscribe: true }})
       },
       unsubscribe: (topic = 'pubsub', cb) => {
-        _pubsub.unsubscribe(topic, cb)
-        
+        unsubscribe(topic, cb)        
         send(client, {url: 'pubsub', params: { topic, unsubscribe: true }})
       },
       subscribers: _pubsub.subscribers
     }
   }
-  const on = (url, cb) => {
-    pubsub.subscribe(url, cb);
+  
+  const server = (client) => {
+    return {
+      uptime: async () => {
+        const { result, id, handler } = await request(client, {url: 'uptime'})        
+        unsubscribe(id, handler);
+        return result
+      },
+      ping: async () => {
+        const { result, id, handler } = await request(client, {url: 'ping'})        
+        unsubscribe(id, handler);
+        return result
+      }
+    }
   }
   
-  return {on, send, request, pubsub}
+  return { send, request, pubsub, server, subscribe, unsubscribe, publish }
 }

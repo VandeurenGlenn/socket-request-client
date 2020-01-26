@@ -1,11 +1,11 @@
-import PubSub from '../../little-pubsub/src/index.js';
+import PubSub from 'little-pubsub';
+import clientApi from './api.js';
 
-const socketRequestClient = options => {
-  let { port, protocol, pubsub, address, wss, retry } = options;
-  if (!port) port = 6000;
-  if (!protocol) protocol = 'echo-protocol';
+const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry: false, pubsub: false }) => {
+  let { pubsub, retry } = options;
   if (!pubsub) pubsub = new PubSub();
-  if (!address) address = 'localhost';
+  
+  const api = clientApi(pubsub)
   let tries = 0;
 
   const onerror = error => {
@@ -25,38 +25,15 @@ const socketRequestClient = options => {
       pubsub.publish(publisher, {error: value});
     }
 
-  }
-
-  const send = (client, request) => {
-    client.send(JSON.stringify(request))
-  }
-
-  const on = (url, cb) => {
-    pubsub.subscribe(url, cb);
-  }
-
-  /**
-   * @param {string} type
-   * @param {string} name
-   * @param {object} params
-   */
-  const request = (client, request) => {
-    return new Promise((resolve, reject) => {
-      request.id = Math.random().toString(36).slice(-12);
-      on(request.id, result => {
-        if (result && result.error) return reject(result.error)
-        resolve(result)
-      });
-      send(client, request);
-    });
-  }
+  }  
 
   const clientConnection = client => {
     return {
       client,
-      request: req => request(client, req),
-      send: req => send(client, req),
-      on,
+      request: req => api.request(client, req),
+      send: req => api.send(client, req),
+      on: api.on,
+      pubsub: api.pubsub(client),
       close: exit => {
         client.onclose = message => {
           if (exit) process.exit()
@@ -74,7 +51,7 @@ const socketRequestClient = options => {
       } else {
         ws = WebSocket;
       }
-      const client = new ws(`${wss ? 'wss' : 'ws'}://${address}:${port}/`, protocol);
+      const client = new ws(url, protocols);
 
       client.onmessage = onmessage;
       client.onerror = onerror;
@@ -86,8 +63,8 @@ const socketRequestClient = options => {
         tries++
         if (!retry) return reject(options)
         if (tries > 5) {
-          console.log(`${protocol} Client Closed`);
-          console.error(`could not connect to - ${wss ? 'wss' : 'ws'}://${address}:${port}/`)
+          console.log(`${protocols} Client Closed`);
+          console.error(`could not connect to - ${url}/`)
           return resolve(clientConnection(client))
         }
         if (message.code === 1006) {

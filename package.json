@@ -8,13 +8,12 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "rollup -c",
+    "c": "rollup -c",
     "test": "node test.js"
   },
   "dependencies": {
-    "braces": "^3.0.2",
-    "little-pubsub": "^0.2.5",
-    "websocket": "^1.0.30"
+    "little-pubsub": "^1.0.2",
+    "websocket": "^1.0.31"
   },
   "devDependencies": {
     "rollup": "^0.61.1",

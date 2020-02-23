@@ -46,6 +46,7 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
         const now = new Date().getTime()
         return (now - startTime)
       },
+      peernet: api.peernet(client),
       server: api.server(client),
       close: exit => {
         client.onclose = message => {

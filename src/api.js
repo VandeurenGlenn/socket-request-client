@@ -69,14 +69,16 @@ export default _pubsub => {
   
   const peernet = (client) => {
     return {
-      join: async (address) => {
-        const requested = { url: 'peernet', params: { join: true, address } }
+      join: async (params) => {
+        params.join = true;
+        const requested = { url: 'peernet', params }
         const { result, id, handler } = await request(client, requested)        
         unsubscribe(id, handler);
         return result
       },
-      leave: async (address) => {
-        const requested = { url: 'peernet', params: { join: false, address } }
+      leave: async (params) => {
+        params.join = false;
+        const requested = { url: 'peernet', params }
         const { result, id, handler } = await request(client, requested)        
         unsubscribe(id, handler);
         return result

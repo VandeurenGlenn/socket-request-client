@@ -12,29 +12,44 @@ export default _pubsub => {
     _pubsub.publish(topic, value);
   }
   
+  const _connectionState = (state) => {
+    switch (state) {
+      case 0:
+        return 'connecting'
+        break;
+      case 1:
+        return 'open'
+        break;
+      case 2:
+        return 'closing'
+        break;
+      case 3:
+        return 'closed'
+        break;
+    }
+  }
   /**
    * @param {string} type
    * @param {string} name
    * @param {object} params
    */
   const request = (client, request) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
+      
+      const state = _connectionState(client.readyState)
+      if (state !== 'open') return reject(`coudn't send request to ${client.id}, no open connection found.`)
+      
       request.id = Math.random().toString(36).slice(-12);
       const handler = result => {
         if (result && result.error) return reject(result.error)
         resolve({result, id: request.id, handler})
       }
       subscribe(request.id, handler);
-      // catch connection error
-      try {
-        await send(client, request);
-      } catch (e) {
-        reject(e)
-      }
+      send(client, request);
     });
   }
   
-  const send = (client, request) => {
+  const send = async (client, request) => {
     return client.send(JSON.stringify(request))
   }
 

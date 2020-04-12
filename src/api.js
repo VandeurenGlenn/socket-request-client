@@ -18,34 +18,39 @@ export default _pubsub => {
    * @param {object} params
    */
   const request = (client, request) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       request.id = Math.random().toString(36).slice(-12);
       const handler = result => {
         if (result && result.error) return reject(result.error)
         resolve({result, id: request.id, handler})
       }
       subscribe(request.id, handler);
-      send(client, request);
+      // catch connection error
+      try {
+        await send(client, request);
+      } catch (e) {
+        reject(e)
+      }
     });
   }
   
   const send = (client, request) => {
-    client.send(JSON.stringify(request))
+    return client.send(JSON.stringify(request))
   }
 
   const pubsub = client => {
     return {
       publish: (topic = 'pubsub', value) => {
         publish(topic, value)
-        send(client, {url: 'pubsub', params: { topic, value }})
+        return send(client, {url: 'pubsub', params: { topic, value }})
       },
       subscribe: (topic = 'pubsub', cb) => {
         subscribe(topic, cb);
-        send(client, {url: 'pubsub', params: { topic, subscribe: true }})
+        return send(client, {url: 'pubsub', params: { topic, subscribe: true }})
       },
       unsubscribe: (topic = 'pubsub', cb) => {
         unsubscribe(topic, cb)        
-        send(client, {url: 'pubsub', params: { topic, unsubscribe: true }})
+        return send(client, {url: 'pubsub', params: { topic, unsubscribe: true }})
       },
       subscribers: _pubsub.subscribers
     }

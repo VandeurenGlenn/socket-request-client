@@ -74,15 +74,23 @@ export default _pubsub => {
   const server = (client) => {
     return {
       uptime: async () => {
-        const { result, id, handler } = await request(client, {url: 'uptime'})        
-        unsubscribe(id, handler);
-        return result
+        try {
+          const { result, id, handler } = await request(client, {url: 'uptime'})        
+          unsubscribe(id, handler);
+          return result
+        } catch (e) {
+          throw e
+        }
       },
       ping: async () => {
-        const now = new Date().getTime()
-        const { result, id, handler } = await request(client, {url: 'ping'})
-        unsubscribe(id, handler);
-        return (Number(result) - now)
+        try {
+          const now = new Date().getTime()
+          const { result, id, handler } = await request(client, {url: 'ping'})
+          unsubscribe(id, handler);
+          return (Number(result) - now)
+        } catch (e) {
+          throw e
+        }
       }
     }
   }
@@ -90,18 +98,26 @@ export default _pubsub => {
   const peernet = (client) => {
     return {
       join: async (params) => {
-        params.join = true;
-        const requested = { url: 'peernet', params }
-        const { result, id, handler } = await request(client, requested)        
-        unsubscribe(id, handler);
-        return result
+        try {
+          params.join = true;
+          const requested = { url: 'peernet', params }
+          const { result, id, handler } = await request(client, requested)        
+          unsubscribe(id, handler);
+          return result
+        } catch (e) {
+          throw e
+        }
       },
       leave: async (params) => {
-        params.join = false;
-        const requested = { url: 'peernet', params }
-        const { result, id, handler } = await request(client, requested)        
-        unsubscribe(id, handler);
-        return result
+        try {
+          params.join = false;
+          const requested = { url: 'peernet', params }
+          const { result, id, handler } = await request(client, requested)        
+          unsubscribe(id, handler);
+          return result
+        } catch (e) {
+          throw e
+        }
       }
     }
   }

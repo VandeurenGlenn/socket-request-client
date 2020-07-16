@@ -1,4 +1,4 @@
-import PubSub from 'little-pubsub';
+import PubSub from '@vandeurenglenn/little-pubsub';
 import clientApi from './api.js';
 
 const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry: false, pubsub: false }) => {

@@ -3,9 +3,10 @@ import clientApi from './api.js';
 
 const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry: false, pubsub: false }) => {
   let { pubsub, retry } = options;
-  if (!pubsub) pubsub = new PubSub();
+  if (!pubsub) pubsub = new PubSub({verbose: false});
   
   const api = clientApi(pubsub)
+  
   let tries = 0;
 
   const onerror = error => {

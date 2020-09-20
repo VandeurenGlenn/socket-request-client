@@ -55,8 +55,7 @@ export default _pubsub => {
 
   const pubsub = client => {
     return {
-      publish: (topic = 'pubsub', value) => {
-        publish(topic, value)
+      publish: (topic = 'pubsub', value) => {        
         return send(client, {url: 'pubsub', params: { topic, value }})
       },
       subscribe: (topic = 'pubsub', cb) => {

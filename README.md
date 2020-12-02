@@ -9,7 +9,7 @@ npm i --save socket-request-client
 ## USAGE
 ```js
 import clientConnection from 'socket-request-client';
-const request = {url: 'user', params: {password: 'password', email:: 'email'}};
+const request = {url: 'user', params: {password: 'password', email: 'email'}};
 
 const client = await clientConnection('ws://localhost:4000')
 // a request is client.on & client.send combined
@@ -27,7 +27,7 @@ import clientConnection from 'socket-request-client';
 import IpfsApi from 'ipfs-api';
 const ipfs = new IpfsApi();
 
-const request = {url: 'user', params: {password: 'password', email:: 'email'}};
+const request = {url: 'user', params: {password: 'password', email: 'email'}};
 
 const client = clientConnection('ws://localhost:4000', 'echo-protocol', {
   pubsub: ipfs.pubsub,

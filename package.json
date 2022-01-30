@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@vandeurenglenn/little-pubsub": "^1.2.3",
-    "websocket": "^1.0.31"
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "rollup": "^0.61.1",

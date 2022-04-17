@@ -1,12 +1,12 @@
-import PubSub from '@vandeurenglenn/little-pubsub';
+import PubSub from './../node_modules/@vandeurenglenn/little-pubsub/src/index.js';
 import clientApi from './api.js';
 
 const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry: false, pubsub: false }) => {
   let { pubsub, retry } = options;
   if (!pubsub) pubsub = new PubSub({verbose: false});
-  
+
   const api = clientApi(pubsub)
-  
+
   let tries = 0;
 
   const onerror = error => {
@@ -26,7 +26,7 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
       pubsub.publish(publisher, {error: value});
     }
 
-  }  
+  }
 
   const clientConnection = client => {
     const startTime = new Date().getTime()
@@ -57,11 +57,11 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
       }
     }
   }
-  
+
   return new Promise((resolve, reject) => {
     const init = () => {
       let ws;
-      if (typeof process === 'object') {
+      if (typeof process === 'object' && !globalThis.WebSocket) {
         ws = require('websocket').w3cwebsocket;
       } else {
         ws = WebSocket;

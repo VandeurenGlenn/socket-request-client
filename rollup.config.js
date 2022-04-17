@@ -7,13 +7,19 @@ export default [
 	// CommonJS version, for Node, Browserify & Webpack
 	{
     input: ['src/index.js'],
-    output: {
-      dir: './',
+    output: [{
+      dir: './dist/commonjs',
       format: 'cjs',
       sourcemap: false,
       intro: `const ENVIRONMENT = {version: '${version}', production: true};`,
       banner: `/* ${name} version ${version} */`
-    },
+    }, {
+      dir: './dist/es',
+      format: 'es',
+      sourcemap: false,
+      intro: `const ENVIRONMENT = {version: '${version}', production: true};`,
+      banner: `/* ${name} version ${version} */`
+    }],
     plugins: [
       cleanup()
     ],

@@ -1,9 +1,11 @@
 import PubSub from './../node_modules/@vandeurenglenn/little-pubsub/src/index.js';
 import clientApi from './api.js';
 
-const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry: false, pubsub: false }) => {
-  let { pubsub, retry } = options;
-  if (!pubsub) pubsub = new PubSub({verbose: false});
+if (!globalThis.PubSub) globalThis.PubSub = PubSub
+if (!globalThis.pubsub) globalThis.pubsub = new PubSub({verbose: false})
+
+const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry: false }) => {
+  const { retry } = options;
 
   const api = clientApi(pubsub)
 

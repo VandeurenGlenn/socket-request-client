@@ -19,10 +19,12 @@ export default [
       sourcemap: false,
       intro: `const ENVIRONMENT = {version: '${version}', production: true};`,
       banner: `/* ${name} version ${version} */`
-    }],
-    plugins: [
-      cleanup()
-    ],
-    experimentalCodeSplitting: true
+    }],		
+		plugins: [
+			// modify({
+			// 	EXIT: `process.exit()`
+			// }),
+			cleanup()
+		],
 	}
 ];

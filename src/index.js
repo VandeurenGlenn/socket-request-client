@@ -52,9 +52,9 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
       peernet: api.peernet(client),
       server: api.server(client),
       close: exit => {
-        client.onclose = message => {
-          if (exit) process.exit()
-        }
+        // client.onclose = message => {
+        //   if (exit) process.exit()
+        // }
         client.close();
       }
     }

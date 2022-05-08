@@ -3,6 +3,7 @@
   "version": "1.6.2",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
+  "browser": "dist/es/index.js",
   "repository": "https://github.com/vandeurenglenn/socket-request-client",
   "author": "vandeurenglenn <vandeurenglenn@gmail.com>",
   "license": "MIT",
@@ -16,7 +17,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
-    "rollup": "^2.70.2",
+    "rollup": "^2.72.1",
     "rollup-plugin-cleanup": "^3.2.1"
   }
 }

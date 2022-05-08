@@ -1,6 +1,6 @@
 {
   "name": "socket-request-client",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
   "browser": "dist/es/index.js",

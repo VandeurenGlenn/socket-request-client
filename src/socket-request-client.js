@@ -63,11 +63,11 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
     }
   }
 
-  return new Promise((resolve, reject) => {
-    const init = () => {
+  return new Promise(async (resolve, reject) => {
+    const init = async () => {
       let ws;
       if (typeof process === 'object' && !globalThis.WebSocket) {
-        ws = require('websocket').w3cwebsocket;
+        ws = (await import('websocket')).w3cwebsocket;
       } else {
         ws = WebSocket;
       }

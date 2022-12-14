@@ -67,7 +67,8 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
     const init = async () => {
       let ws;
       if (typeof process === 'object' && !globalThis.WebSocket) {
-        ws = (await import('websocket')).w3cwebsocket;
+        ws = await import('websocket')
+        ws = ws.w3cwebsocket
       } else {
         ws = WebSocket;
       }

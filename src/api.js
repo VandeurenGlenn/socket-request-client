@@ -12,7 +12,7 @@ export default _pubsub => {
     _pubsub.publish(topic, value);
   }
 
-  const _connectionState = (state) => {
+  const connectionState = (state) => {
     switch (state) {
       case 0:
         return 'connecting'
@@ -36,7 +36,7 @@ export default _pubsub => {
   const request = (client, request) => {
     return new Promise((resolve, reject) => {
 
-      const state = _connectionState(client.readyState)
+      const state = connectionState(client.readyState)
       if (state !== 'open') return reject(`coudn't send request to ${client.id}, no open connection found.`)
 
       request.id = Math.random().toString(36).slice(-12);
@@ -122,5 +122,5 @@ export default _pubsub => {
     }
   }
 
-  return { send, request, pubsub, server, subscribe, unsubscribe, publish, peernet }
+  return { send, request, pubsub, server, subscribe, unsubscribe, publish, peernet, connectionState }
 }

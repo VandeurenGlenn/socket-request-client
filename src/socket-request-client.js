@@ -1,11 +1,14 @@
-import PubSub from './../node_modules/@vandeurenglenn/little-pubsub/src/index.js';
+import LittlePubSub from '@vandeurenglenn/little-pubsub';
 import clientApi from './api.js';
 
-if (!globalThis.PubSub) globalThis.PubSub = PubSub
-if (!globalThis.pubsub) globalThis.pubsub = new PubSub({verbose: false})
+if (!globalThis.PubSub) globalThis.PubSub = LittlePubSub
+if (!globalThis.pubsub) globalThis.pubsub = new LittlePubSub({verbose: false})
 
-const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry: false }) => {
-  const { retry } = options;
+const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry: true, timeout: 10_000, times: 10 }) => {
+  let { retry, timeout, times } = options;
+  if (retry === undefined) retry = true
+  if (timeout === undefined) timeout = 10_000  
+  if (times === undefined) times = 10
 
   const api = clientApi(pubsub)
 
@@ -27,7 +30,6 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
     } else {
       pubsub.publish(publisher, {error: value});
     }
-
   }
 
   const clientConnection = client => {
@@ -51,6 +53,7 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
       },
       peernet: api.peernet(client),
       server: api.server(client),
+      connectionState: () => api.connectionState(client.readyState),
       close: exit => {
         // client.onclose = message => {
         //   if (exit) process.exit()
@@ -72,6 +75,7 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
 
       client.onmessage = onmessage;
       client.onerror = onerror;
+      
       client.onopen = () => {
         tries = 0;
         resolve(clientConnection(client))
@@ -79,20 +83,20 @@ const socketRequestClient = (url, protocols = 'echo-protocol', options = { retry
       client.onclose = message => {
         tries++
         if (!retry) return reject(options)
-        if (tries > 5) {
+        if (tries > times) {
           console.log(`${protocols} Client Closed`);
           console.error(`could not connect to - ${url}/`)
           return resolve(clientConnection(client))
         }
         if (message.code === 1006) {
-          console.log('Retrying in 10 seconds');
+          console.log(`Retrying in ${timeout} ms`);
           setTimeout(() => {
             return init();
-          }, retry);
+          }, timeout);
         }
       };
     }
     return init();
   });
 }
-export default socketRequestClient;
+export { socketRequestClient as default }

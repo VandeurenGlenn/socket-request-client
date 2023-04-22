@@ -2,7 +2,10 @@
   "name": "socket-request-client",
   "version": "1.7.3",
   "exports": {
-    ".": "./src/socket-request-client.js"
+    ".": {
+      "import": "./exports/index.js",
+      "types": "./exports/index.d.ts"
+    }
   },
   "type": "module",
   "repository": "https://github.com/vandeurenglenn/socket-request-client",
@@ -10,10 +13,16 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "build": "rollup -c",
     "test": "node test.js"
   },
   "dependencies": {
-    "@vandeurenglenn/little-pubsub": "^1.4.0",
+    "@vandeurenglenn/little-pubsub": "^1.4.3",
     "websocket": "^1.0.34"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.0.0",
+    "rollup": "^3.20.7",
+    "tslib": "^2.5.0"
   }
 }

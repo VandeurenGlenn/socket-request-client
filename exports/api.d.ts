@@ -1,4 +1,4 @@
-import LittlePubSub from "@vandeurenglenn/little-pubsub/index.js";
+import LittlePubSub from "@vandeurenglenn/little-pubsub";
 declare class Api {
     _pubsub: any;
     constructor(_pubsub: LittlePubSub);

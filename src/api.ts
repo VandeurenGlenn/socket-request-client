@@ -1,4 +1,4 @@
-import LittlePubSub from "@vandeurenglenn/little-pubsub/index.js";
+import LittlePubSub from "@vandeurenglenn/little-pubsub";
 
 declare type Response = {
     result: Uint8Array | ArrayBuffer

@@ -171,7 +171,7 @@ class SocketRequestClient {
     #options;
     #protocol;
     #url;
-    ['constructor'](url, protocol, options) {
+    constructor(url, protocol, options) {
         let { retry, timeout, times } = options;
         if (retry !== undefined)
             this.#retry = retry;
@@ -183,7 +183,6 @@ class SocketRequestClient {
         this.#protocol = protocol;
         this.#options = options;
         this.api = new Api(globalThis.pubsub);
-        return this.init();
     }
     init() {
         return new Promise(async (resolve, reject) => {
@@ -237,4 +236,4 @@ class SocketRequestClient {
     }
 }
 
-export { SocketRequestClient as default };
+export { SocketRequestClient };

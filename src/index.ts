@@ -9,13 +9,7 @@ declare type socketRequestMessage = {
   data: ArrayBuffer | Uint8Array
 }
 
-interface socketRequestClientInterface {
-  api: Api;
-  constructor(url: string, protocol?: string, options?: { retry: true, timeout: 10_000, times: 10 }): Promise<ClientConnection>
-  onmessage(message: socketRequestMessage): void
-}
-
-class SocketRequestClient implements socketRequestClientInterface {
+class SocketRequestClient {
   api: Api;
   clientConnection: ClientConnection;
   #tries: number = 0;
@@ -26,7 +20,7 @@ class SocketRequestClient implements socketRequestClientInterface {
   #protocol: string;
   #url: string;
 
-  ['constructor'](url: string, protocol?: string, options?: { retry: boolean; timeout: number; times: number; }): Promise<ClientConnection> {
+  constructor(url: string, protocol?: string, options?: { retry: boolean; timeout: number; times: number; }) {
     let { retry, timeout, times } = options;
     if (retry !== undefined) this.#retry = retry
     if (timeout !== undefined) this.#timeout = timeout  
@@ -37,8 +31,6 @@ class SocketRequestClient implements socketRequestClientInterface {
 
     this.#options = options
     this.api = new Api(globalThis.pubsub)
-  
-    return this.init()
   }
 
 
@@ -74,9 +66,7 @@ class SocketRequestClient implements socketRequestClientInterface {
       }
       return init();
     });
-  
-}
-
+  }
 
   onerror = error => {
     if (globalThis.pubsub.subscribers['error']) {
@@ -86,7 +76,7 @@ class SocketRequestClient implements socketRequestClientInterface {
     }
   }
 
-  onmessage(message) {
+  onmessage(message: socketRequestMessage) {
     const {value, url, status, id} = JSON.parse(message.data.toString());
     const publisher = id ? id : url;
     if (status === 200) {
@@ -96,4 +86,5 @@ class SocketRequestClient implements socketRequestClientInterface {
     }
   }
 }
-export { SocketRequestClient as default }
+
+export { SocketRequestClient }

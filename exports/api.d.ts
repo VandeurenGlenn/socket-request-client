@@ -1,4 +1,9 @@
 import LittlePubSub from "@vandeurenglenn/little-pubsub";
+export declare type SocketRequest = {
+    url: string;
+    id: string;
+    params: {};
+};
 declare class Api {
     _pubsub: any;
     constructor(_pubsub: LittlePubSub);

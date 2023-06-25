@@ -6,6 +6,11 @@ declare type Response = {
     handler: Function
   }
 
+export declare type SocketRequest = {
+  url: string
+  id: string
+  params: {}
+}
 
 class Api {
 

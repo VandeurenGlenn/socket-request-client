@@ -21,7 +21,7 @@ class SocketRequestClient {
   #url: string;
 
   constructor(url: string, protocol?: string, options?: { retry: boolean; timeout: number; times: number; }) {
-    let { retry, timeout, times } = options;
+    let { retry, timeout, times } = options || {};
     if (retry !== undefined) this.#retry = retry
     if (timeout !== undefined) this.#timeout = timeout  
     if (times !== undefined) this.#times = times

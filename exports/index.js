@@ -188,7 +188,7 @@ class SocketRequestClient {
     #protocol;
     #url;
     constructor(url, protocol, options) {
-        let { retry, timeout, times } = options;
+        let { retry, timeout, times } = options || {};
         if (retry !== undefined)
             this.#retry = retry;
         if (timeout !== undefined)

@@ -8,8 +8,8 @@ declare type Response = {
 
 export declare type SocketRequest = {
   url: string
-  id: string
-  params: {}
+  id?: string
+  params?: {}
 }
 
 class Api {

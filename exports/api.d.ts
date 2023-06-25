@@ -1,8 +1,8 @@
 import LittlePubSub from "@vandeurenglenn/little-pubsub";
 export declare type SocketRequest = {
     url: string;
-    id: string;
-    params: {};
+    id?: string;
+    params?: {};
 };
 declare class Api {
     _pubsub: any;

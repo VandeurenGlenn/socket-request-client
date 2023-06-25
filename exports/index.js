@@ -138,7 +138,7 @@ class ClientConnection {
         globalThis.pubsub.unsubscribe(id, handler);
         return result;
     };
-    send = req => this.api.send(this.client, req);
+    send = (req) => this.api.send(this.client, req);
     get subscribe() {
         return this.api.subscribe;
     }

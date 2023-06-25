@@ -6,7 +6,7 @@ declare class ClientConnection {
     api: Api;
     constructor(client: WebSocket, api: Api);
     request: (req: SocketRequest) => Promise<any>;
-    send: (req: any) => Promise<any>;
+    send: (req: SocketRequest) => Promise<any>;
     get subscribe(): (topic: any, cb: any) => void;
     get unsubscribe(): (topic: any, cb: any) => void;
     get subscribers(): () => void;

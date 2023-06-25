@@ -18,7 +18,7 @@ class ClientConnection {
     return result
   }
 
-  send = req => this.api.send(this.client, req)
+  send = (req: SocketRequest) => this.api.send(this.client, req)
   
   get subscribe() {
     return this.api.subscribe

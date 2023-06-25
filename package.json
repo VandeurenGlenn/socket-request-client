@@ -1,6 +1,6 @@
 {
   "name": "socket-request-client",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "exports": {
     ".": {
       "import": "./exports/index.js",

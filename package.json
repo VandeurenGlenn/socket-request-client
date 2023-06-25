@@ -5,6 +5,18 @@
     ".": {
       "import": "./exports/index.js",
       "types": "./exports/index.d.ts"
+    },
+    "./client": {
+      "import": "./exports/index.js",
+      "types": "./exports/index.d.ts"
+    },
+    "./connection": {
+      "import": "./exports/connection.js",
+      "types": "./exports/connection.d.ts"
+    },
+    "./api": {
+      "import": "./exports/api.js",
+      "types": "./exports/api.d.ts"
     }
   },
   "type": "module",

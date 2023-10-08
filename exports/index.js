@@ -203,8 +203,9 @@ class SocketRequestClient {
     init() {
         return new Promise(async (resolve, reject) => {
             const init = async () => {
+                // @ts-ignore
                 if (!globalThis.WebSocket)
-                    globalThis.WebSocket = (await import('websocket')).w3cwebsocket;
+                    globalThis.WebSocket = (await import('websocket')).default.w3cwebsocket;
                 const client = new WebSocket(this.#url, this.#protocol);
                 client.onmessage = this.onmessage;
                 client.onerror = this.onerror;

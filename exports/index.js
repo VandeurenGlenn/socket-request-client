@@ -213,7 +213,7 @@ class SocketRequestClient {
                     this.#tries = 0;
                     resolve(new ClientConnection(client, this.api));
                 };
-                client.onclose = message => {
+                client.onclose = (message) => {
                     this.#tries++;
                     if (!this.#retry)
                         return reject(this.#options);
@@ -233,7 +233,7 @@ class SocketRequestClient {
             return init();
         });
     }
-    onerror = error => {
+    onerror = (error) => {
         if (globalThis.pubsub.subscribers['error']) {
             globalThis.pubsub.publish('error', error);
         }
@@ -242,6 +242,10 @@ class SocketRequestClient {
         }
     };
     onmessage(message) {
+        if (!message.data) {
+            console.warn(`message ignored because it contained no data`);
+            return;
+        }
         const { value, url, status, id } = JSON.parse(message.data.toString());
         const publisher = id ? id : url;
         if (status === 200) {

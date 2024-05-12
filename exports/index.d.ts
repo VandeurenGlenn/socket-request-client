@@ -1,8 +1,5 @@
 import Api from './api.js';
 import ClientConnection from './connection.js';
-declare type socketRequestMessage = {
-    data: ArrayBuffer | Uint8Array;
-};
 declare class SocketRequestClient {
     #private;
     api: Api;
@@ -11,9 +8,10 @@ declare class SocketRequestClient {
         retry: boolean;
         timeout: number;
         times: number;
+        experimentalWebsocket?: boolean;
     });
     init(): Promise<ClientConnection>;
     onerror: (error: any) => void;
-    onmessage(message: socketRequestMessage): void;
+    onmessage(message: any): void;
 }
 export { SocketRequestClient };

@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@vandeurenglenn/little-pubsub": "^1.4.7",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.35"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",

@@ -1,10 +1,10 @@
-import LittlePubSub from "@vandeurenglenn/little-pubsub";
+import LittlePubSub from '@vandeurenglenn/little-pubsub'
 
 declare type Response = {
-    result: Uint8Array | ArrayBuffer
-    id: string,
-    handler: Function
-  }
+  result: Uint8Array | ArrayBuffer
+  id: string
+  handler: Function
+}
 
 export declare type SocketRequest = {
   url: string
@@ -13,7 +13,6 @@ export declare type SocketRequest = {
 }
 
 class Api {
-
   _pubsub
 
   constructor(_pubsub: LittlePubSub) {
@@ -21,15 +20,15 @@ class Api {
   }
 
   subscribe(topic, cb) {
-    this._pubsub.subscribe(topic, cb);
+    this._pubsub.subscribe(topic, cb)
   }
 
   unsubscribe(topic, cb) {
-    this._pubsub.unsubscribe(topic, cb);
+    this._pubsub.unsubscribe(topic, cb)
   }
 
   publish(topic, value) {
-    this._pubsub.publish(topic, value);
+    this._pubsub.publish(topic, value)
   }
 
   subscribers() {
@@ -53,21 +52,23 @@ class Api {
    * @param {string} name
    * @param {object} params
    */
-  request(client, request): Promise<{result, id, handler}> {
+  request(client, request): Promise<{ result; id; handler }> {
     return new Promise((resolve, reject) => {
-
       const state = this.connectionState(client.readyState)
-      if (state !== 'open') return reject(`coudn't send request to ${client.id}, no open connection found.`)
+      if (state !== 'open')
+        return reject(
+          `coudn't send request to ${client.id}, no open connection found.`
+        )
 
-      request.id = Math.random().toString(36).slice(-12);
-      const handler = result => {
+      request.id = Math.random().toString(36).slice(-12)
+      const handler = (result) => {
         if (result && result.error) return reject(result.error)
-        resolve({result, id: request.id, handler})
-        this.unsubscribe(request.id, handler);
+        resolve({ result, id: request.id, handler })
+        this.unsubscribe(request.id, handler)
       }
-      this.subscribe(request.id, handler);
-      this.send(client, request);
-    });
+      this.subscribe(request.id, handler)
+      this.send(client, request)
+    })
   }
 
   async send(client, request) {
@@ -77,15 +78,21 @@ class Api {
   pubsub(client) {
     return {
       publish: (topic = 'pubsub', value) => {
-        return this.send(client, {url: 'pubsub', params: { topic, value }})
+        return this.send(client, { url: 'pubsub', params: { topic, value } })
       },
       subscribe: (topic = 'pubsub', cb) => {
-        this.subscribe(topic, cb);
-        return this.send(client, {url: 'pubsub', params: { topic, subscribe: true }})
+        this.subscribe(topic, cb)
+        return this.send(client, {
+          url: 'pubsub',
+          params: { topic, subscribe: true }
+        })
       },
       unsubscribe: (topic = 'pubsub', cb) => {
         this.unsubscribe(topic, cb)
-        return this.send(client, {url: 'pubsub', params: { topic, unsubscribe: true }})
+        return this.send(client, {
+          url: 'pubsub',
+          params: { topic, unsubscribe: true }
+        })
       },
       subscribers: this._pubsub.subscribers
     }
@@ -95,8 +102,10 @@ class Api {
     return {
       uptime: async () => {
         try {
-          const { result, id, handler } = await this.request(client, {url: 'uptime'})
-          this.unsubscribe(id, handler);
+          const { result, id, handler } = await this.request(client, {
+            url: 'uptime'
+          })
+          this.unsubscribe(id, handler)
           return result
         } catch (e) {
           throw e
@@ -105,9 +114,11 @@ class Api {
       ping: async () => {
         try {
           const now = new Date().getTime()
-          const { result, id, handler } = await this.request(client, {url: 'ping'})
-          this.unsubscribe(id, handler);
-          return (Number(result) - now)
+          const { result, id, handler } = await this.request(client, {
+            url: 'ping'
+          })
+          this.unsubscribe(id, handler)
+          return Number(result) - now
         } catch (e) {
           throw e
         }
@@ -119,10 +130,10 @@ class Api {
     return {
       join: async (params) => {
         try {
-          params.join = true;
+          params.join = true
           const requested = { url: 'peernet', params }
           const { result, id, handler } = await this.request(client, requested)
-          this.unsubscribe(id, handler);
+          this.unsubscribe(id, handler)
           return result
         } catch (e) {
           throw e
@@ -130,10 +141,21 @@ class Api {
       },
       leave: async (params) => {
         try {
-          params.join = false;
+          params.join = false
           const requested = { url: 'peernet', params }
           const { result, id, handler } = await this.request(client, requested)
-          this.unsubscribe(id, handler);
+          this.unsubscribe(id, handler)
+          return result
+        } catch (e) {
+          throw e
+        }
+      },
+      peers: async (params) => {
+        try {
+          params.peers = true
+          const requested = { url: 'peernet', params }
+          const { result, id, handler } = await this.request(client, requested)
+          this.unsubscribe(id, handler)
           return result
         } catch (e) {
           throw e
@@ -141,8 +163,6 @@ class Api {
       }
     }
   }
-  
 }
-
 
 export { Api as default }

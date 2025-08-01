@@ -1,4 +1,4 @@
-import LittlePubSub from "@vandeurenglenn/little-pubsub";
+import LittlePubSub from '@vandeurenglenn/little-pubsub';
 export declare type SocketRequest = {
     url: string;
     id?: string;
@@ -36,6 +36,7 @@ declare class Api {
     peernet(client: any): {
         join: (params: any) => Promise<any>;
         leave: (params: any) => Promise<any>;
+        peers: (params: any) => Promise<any>;
     };
 }
 export { Api as default };

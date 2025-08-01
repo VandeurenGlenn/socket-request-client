@@ -40,7 +40,7 @@ class Api {
             if (state !== 'open')
                 return reject(`coudn't send request to ${client.id}, no open connection found.`);
             request.id = Math.random().toString(36).slice(-12);
-            const handler = result => {
+            const handler = (result) => {
                 if (result && result.error)
                     return reject(result.error);
                 resolve({ result, id: request.id, handler });
@@ -60,11 +60,17 @@ class Api {
             },
             subscribe: (topic = 'pubsub', cb) => {
                 this.subscribe(topic, cb);
-                return this.send(client, { url: 'pubsub', params: { topic, subscribe: true } });
+                return this.send(client, {
+                    url: 'pubsub',
+                    params: { topic, subscribe: true }
+                });
             },
             unsubscribe: (topic = 'pubsub', cb) => {
                 this.unsubscribe(topic, cb);
-                return this.send(client, { url: 'pubsub', params: { topic, unsubscribe: true } });
+                return this.send(client, {
+                    url: 'pubsub',
+                    params: { topic, unsubscribe: true }
+                });
             },
             subscribers: this._pubsub.subscribers
         };
@@ -73,7 +79,9 @@ class Api {
         return {
             uptime: async () => {
                 try {
-                    const { result, id, handler } = await this.request(client, { url: 'uptime' });
+                    const { result, id, handler } = await this.request(client, {
+                        url: 'uptime'
+                    });
                     this.unsubscribe(id, handler);
                     return result;
                 }
@@ -84,9 +92,11 @@ class Api {
             ping: async () => {
                 try {
                     const now = new Date().getTime();
-                    const { result, id, handler } = await this.request(client, { url: 'ping' });
+                    const { result, id, handler } = await this.request(client, {
+                        url: 'ping'
+                    });
                     this.unsubscribe(id, handler);
-                    return (Number(result) - now);
+                    return Number(result) - now;
                 }
                 catch (e) {
                     throw e;
@@ -111,6 +121,18 @@ class Api {
             leave: async (params) => {
                 try {
                     params.join = false;
+                    const requested = { url: 'peernet', params };
+                    const { result, id, handler } = await this.request(client, requested);
+                    this.unsubscribe(id, handler);
+                    return result;
+                }
+                catch (e) {
+                    throw e;
+                }
+            },
+            peers: async (params) => {
+                try {
+                    params.peers = true;
                     const requested = { url: 'peernet', params };
                     const { result, id, handler } = await this.request(client, requested);
                     this.unsubscribe(id, handler);

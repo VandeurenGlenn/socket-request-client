@@ -21,6 +21,7 @@ declare class ClientConnection {
     get peernet(): {
         join: (params: any) => Promise<any>;
         leave: (params: any) => Promise<any>;
+        peers: (params: any) => Promise<any>;
     };
     get server(): {
         uptime: () => Promise<any>;

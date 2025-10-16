@@ -150,10 +150,9 @@ class Api {
           throw e
         }
       },
-      peers: async (params) => {
+      peers: async () => {
         try {
-          params.peers = true
-          const requested = { url: 'peernet', params }
+          const requested = { url: 'peernet', params: { peers: true } }
           const { result, id, handler } = await this.request(client, requested)
           this.unsubscribe(id, handler)
           return result

@@ -130,10 +130,9 @@ class Api {
                     throw e;
                 }
             },
-            peers: async (params) => {
+            peers: async () => {
                 try {
-                    params.peers = true;
-                    const requested = { url: 'peernet', params };
+                    const requested = { url: 'peernet', params: { peers: true } };
                     const { result, id, handler } = await this.request(client, requested);
                     this.unsubscribe(id, handler);
                     return result;
@@ -204,7 +203,7 @@ class SocketRequestClient {
     clientConnection;
     #tries = 0;
     #retry = false;
-    #timeout = 10000;
+    #timeout = 10_000;
     #times = 10;
     #options;
     #protocol;

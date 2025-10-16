@@ -36,7 +36,7 @@ declare class Api {
     peernet(client: any): {
         join: (params: any) => Promise<any>;
         leave: (params: any) => Promise<any>;
-        peers: (params: any) => Promise<any>;
+        peers: () => Promise<any>;
     };
 }
 export { Api as default };

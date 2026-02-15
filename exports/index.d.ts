@@ -1,5 +1,10 @@
+import LittlePubSub from '@vandeurenglenn/little-pubsub';
 import Api from './api.js';
 import ClientConnection from './connection.js';
+declare global {
+    var PubSub: typeof LittlePubSub;
+    var pubsub: LittlePubSub;
+}
 declare class SocketRequestClient {
     #private;
     api: Api;
@@ -14,4 +19,4 @@ declare class SocketRequestClient {
     onerror: (error: any) => void;
     onmessage(message: any): void;
 }
-export { SocketRequestClient };
+export { SocketRequestClient, Api, ClientConnection };

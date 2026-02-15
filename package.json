@@ -26,16 +26,16 @@
   "private": false,
   "scripts": {
     "build": "rollup -c",
-    "test": "node test.js"
+    "test": "node --test test.js"
   },
   "dependencies": {
-    "@vandeurenglenn/little-pubsub": "^1.5.1",
+    "@vandeurenglenn/little-pubsub": "^1.5.2",
     "websocket": "^1.0.35"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^12.1.4",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@types/websocket": "^1.0.10",
-    "rollup": "^4.52.4",
+    "rollup": "^4.57.1",
     "tslib": "^2.8.1"
   }
 }

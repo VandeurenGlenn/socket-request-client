@@ -218,7 +218,7 @@ class SocketRequestClient {
         if (times !== undefined)
             this.#times = times;
         if (experimentalWebsocket !== undefined)
-            this.#experimentalWebsocket;
+            this.#experimentalWebsocket = experimentalWebsocket;
         this.#url = url;
         this.#protocol = protocol;
         this.#options = options;
@@ -284,7 +284,7 @@ class SocketRequestClient {
         });
     }
     onerror = (error) => {
-        if (globalThis.pubsub.subscribers['error']) {
+        if (globalThis.pubsub.hasSubscribers('error')) {
             globalThis.pubsub.publish('error', error);
         }
         else {
@@ -307,4 +307,4 @@ class SocketRequestClient {
     }
 }
 
-export { SocketRequestClient };
+export { Api, ClientConnection, SocketRequestClient };
